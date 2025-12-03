@@ -1,0 +1,23 @@
+{
+  "name": "Auto trading system with docker",
+  "version": "1.0.0",
+  "description": "Auto trading system with docker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "local": "cp ./config/config_local.js ./config/config.js && echo '로컬 빌드 완료'",
+    "prod": "cp ./config/config.prod.js ./config/config.js && echo '운영 빌드 완료'",
+    "sass": "sass --watch static/scss/main.scss static/css/chatroom/common.css",
+    "dev": "concurrently \"npm run sass\" \"npm run start\""
+  },
+  "author": "taesikk",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "dependencies": {
+    "firebase": "^8.6.5",
+    "firebase-app": "^0.0.1",
+    "firebase-tools": "^14.10.1"
+  }
+}
