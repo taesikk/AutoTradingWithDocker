@@ -35,7 +35,7 @@ public class TokenTest {
 		JsonObject jsondata = new JsonObject();
 		jsondata.addProperty("grant_type", grantType);
 		jsondata.addProperty("appkey", appKey);
-		jsondata.addProperty("appscret", appSecret);
+		jsondata.addProperty("appsecret", appSecret);
 
 
 		try {
@@ -45,7 +45,7 @@ public class TokenTest {
 					.POST(HttpRequest.BodyPublishers.ofString(jsondata.toString()))
 					.build();
 
-			log.info("[getAccessToken] ========== Response : {}", request.toString());
+			log.info("[getAccessToken] ========== Request : {}", request.toString());
 			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 			log.info("[getAccessToken] ========== Response : {}", response.toString());
 
