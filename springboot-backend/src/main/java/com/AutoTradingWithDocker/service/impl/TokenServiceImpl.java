@@ -1,6 +1,7 @@
 package com.AutoTradingWithDocker.service.impl;
 
 import com.AutoTradingWithDocker.config.TokenProp;
+import com.AutoTradingWithDocker.model.TokenResult;
 import com.AutoTradingWithDocker.service.TokenService;
 import com.AutoTradingWithDocker.utils.DomainUtil;
 import com.google.gson.*;
@@ -27,7 +28,7 @@ public class TokenServiceImpl implements TokenService {
     private final DomainUtil domainUtil;
 	private final TokenProp tokenProp;
 	@Override
-    public void getAccessToken() {
+    public TokenResult getAccessToken() {
 		String totalUrl = domainUtil.baseUrl + domainUtil.getTokenUrl;
 		String grantType = tokenProp.getGrantType();
 		String appKey = tokenProp.getAppKey();
@@ -35,27 +36,43 @@ public class TokenServiceImpl implements TokenService {
 
 		// json 데이터 생성
 		JsonObject jsondata = new JsonObject();
-		jsondata.addProperty("granttype", grantType);
+		jsondata.addProperty("grant_type", grantType);
 		jsondata.addProperty("appkey", appKey);
-		jsondata.addProperty("appscret", appSecret);
+		jsondata.addProperty("appsecret", appSecret);
 
 
+		JsonObject responseJson = new JsonObject();
 		try {
-//			URL url = new URL(totalUrl);
-//			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
 			HttpClient client = HttpClient.newHttpClient();
 			HttpRequest request = HttpRequest.newBuilder()
 					.uri(URI.create(totalUrl))
 					.POST(HttpRequest.BodyPublishers.ofString(jsondata.toString()))
 					.build();
 
+			log.info("[getAccessToken] ========== Request : {}", request.toString());
 			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 			log.info("[getAccessToken] ========== Response : {}", response.toString());
 
+			if (response.statusCode() != 200) {
+				throw new RuntimeException("API info is not correct. " + response.body());
+			}
+
+			responseJson = JsonParser.parseString(response.body()).getAsJsonObject();
+			log.info("[getAccessToken] ========== accessToken : {}", responseJson.get("access_token"));
+			log.info("[getAccessToken] ========== expires_in : {}", responseJson.get("expires_in"));
+			log.info("[getAccessToken] ========== access_token_token_expired : {}", responseJson.get("access_token_token_expired"));
+
+
+
 		} catch (Exception e) {
-			log.info("Invalid json data.");
+			log.info("[getAccessToken CatchException] Invalid json data. {}", e.getMessage());
 		}
+
+		return TokenResult.builder()
+				.acccessToken(responseJson.get("access_token").getAsString())
+				.expiredSec(responseJson.get("expires_in").getAsString())
+				.expiredDate(responseJson.get("access_token_token_expired").getAsString())
+				.build();
 	}
 
 	public static StringBuilder print(HttpURLConnection conn) throws IOException {

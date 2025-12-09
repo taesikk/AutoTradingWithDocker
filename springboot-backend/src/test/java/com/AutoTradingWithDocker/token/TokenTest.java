@@ -3,6 +3,7 @@ package com.AutoTradingWithDocker.token;
 import com.AutoTradingWithDocker.config.TokenProp;
 import com.AutoTradingWithDocker.utils.DomainUtil;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -48,6 +49,11 @@ public class TokenTest {
 			log.info("[getAccessToken] ========== Request : {}", request.toString());
 			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 			log.info("[getAccessToken] ========== Response : {}", response.toString());
+
+			JsonObject responseJson = JsonParser.parseString(response.body()).getAsJsonObject();
+			log.info("[getAccessToken] ========== accessToken : {}", responseJson.get("access_token"));
+			log.info("[getAccessToken] ========== expires_in : {}", responseJson.get("expires_in"));
+			log.info("[getAccessToken] ========== access_token_token_expired : {}", responseJson.get("access_token_token_expired"));
 
 		} catch (Exception e) {
 			log.info("[getAccessToken CatchException] Invalid json data. {}", e.getMessage());
