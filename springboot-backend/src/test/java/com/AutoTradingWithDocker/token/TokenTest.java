@@ -1,6 +1,7 @@
 package com.AutoTradingWithDocker.token;
 
 import com.AutoTradingWithDocker.config.TokenProp;
+import com.AutoTradingWithDocker.model.TokenResult;
 import com.AutoTradingWithDocker.utils.DomainUtil;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -26,7 +27,7 @@ public class TokenTest {
 	private TokenProp tokenProp;
 
 	@Test
-	public void getAccessToken() {
+	public TokenResult getAccessToken() {
 		String totalUrl = domainUtil.baseUrl + domainUtil.getTokenUrl;
 		String grantType = tokenProp.getGrantType();
 		String appKey = tokenProp.getAppKey();
@@ -39,6 +40,7 @@ public class TokenTest {
 		jsondata.addProperty("appsecret", appSecret);
 
 
+		JsonObject responseJson = new JsonObject();
 		try {
 			HttpClient client = HttpClient.newHttpClient();
 			HttpRequest request = HttpRequest.newBuilder()
@@ -50,13 +52,20 @@ public class TokenTest {
 			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 			log.info("[getAccessToken] ========== Response : {}", response.toString());
 
-			JsonObject responseJson = JsonParser.parseString(response.body()).getAsJsonObject();
+			responseJson = JsonParser.parseString(response.body()).getAsJsonObject();
 			log.info("[getAccessToken] ========== accessToken : {}", responseJson.get("access_token"));
 			log.info("[getAccessToken] ========== expires_in : {}", responseJson.get("expires_in"));
 			log.info("[getAccessToken] ========== access_token_token_expired : {}", responseJson.get("access_token_token_expired"));
 
+
 		} catch (Exception e) {
 			log.info("[getAccessToken CatchException] Invalid json data. {}", e.getMessage());
 		}
+
+		return TokenResult.builder()
+				.acccessToken(responseJson.get("access_token").getAsString())
+				.expiredSec(responseJson.get("expires_in").getAsString())
+				.expiredDate(responseJson.get("access_token_token_expired").getAsString())
+				.build();
 	}
 }
