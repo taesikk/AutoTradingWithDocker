@@ -8,4 +8,5 @@ public class DomainUtil {
 
 	public final String getTokenUrl = "/oauth2/tokenP";
 	public final String getAccountAmount = "/uapi/domestic-stock/v1/trading/inquire-balance";
+	public final String getTradeAmount = "/uapi/domestic-stock/v1/trading/inquire-psbl-order";
 }

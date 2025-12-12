@@ -4,5 +4,4 @@ import com.AutoTradingWithDocker.model.TokenResult;
 
 public interface TokenService {
     public TokenResult getAccessToken();
-	public void getAccountAmount(TokenResult tokenResult);
 }
