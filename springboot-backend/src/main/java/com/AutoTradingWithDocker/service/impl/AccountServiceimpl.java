@@ -31,6 +31,13 @@ public class AccountServiceimpl implements AccountService {
 		this.appSecret = tokenProp.getAppSecret();
 		this.appKey= tokenProp.getAppKey();
 	}
+
+	/**
+	 * 주식 잔고 조회
+	 *
+	 * 현재 매수한 종목 및 현황 조회 가능
+	 * @param tokenResult
+	 */
 	@Override
 	public void getAccountAmount(TokenResult tokenResult){
 		this.setDefaultKey();
@@ -80,43 +87,5 @@ public class AccountServiceimpl implements AccountService {
 				+ "&OFL_YN=&CTX_AREA_FK100=&CTX_AREA_NK100=";
 
 		return queryString;
-	}
-
-	@Override
-	public void getTradeAmount(TokenResult tokenResult) {
-		this.setDefaultKey();
-		String queryString = "";
-		String totalUrl = domainUtil.baseUrl + domainUtil.getTradeAmount + queryString;
-
-		String CANO = "";
-		String ACNT_PRDT_CD = "01";
-		String PDNO = "";
-		String ORD_UNPR = "";
-		String ORD_DVSN = "01";
-		String CMA_EVLU_AMT_ICLD_YN = "N";
-		String OVRS_ICLD_YN = "N";
-
-		try {
-			HttpClient client = HttpClient.newHttpClient();
-			HttpRequest request = HttpRequest.newBuilder()
-					.uri(URI.create(totalUrl))
-					.headers("content-type", "application/json; charset=utf-8",
-							"authorization", "Bearer " + tokenResult.getAcccessToken(),
-							"appkey", this.appKey,
-							"appsecret", this.appSecret,
-							"tr_id", "TTTC8908R"
-					)
-					.GET()
-					.build();
-
-			log.info("[getTradeAmount] ========== Request : {}", request.toString());
-			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-			log.info("[getTradeAmount] ========== Response : {}", response.toString());
-
-			JsonObject responseJson = JsonParser.parseString(response.body()).getAsJsonObject();
-			log.info("[getTradeAmount] ========== responseJson String : {}", responseJson.toString());
-		} catch (Exception e) {
-			log.info("[getTradeAmount CatchException] Invalid json data. {}", e.getMessage());
-		}
 	}
 }
