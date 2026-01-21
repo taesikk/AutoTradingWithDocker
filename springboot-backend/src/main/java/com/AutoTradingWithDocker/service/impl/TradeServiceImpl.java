@@ -22,7 +22,6 @@ import java.net.http.HttpResponse;
 @RequiredArgsConstructor
 public class TradeServiceImpl implements TradeService {
 	private final DomainUtil domainUtil;
-	private final HttpUtil httpUtil;
 	private final TokenProp tokenProp;
 
 	private String grantType;
@@ -43,7 +42,7 @@ public class TradeServiceImpl implements TradeService {
 	public void canBuyStock(TokenResult tokenResult) {
 		this.setDefaultKey();
 		String queryString = "";
-		String totalUrl = domainUtil.baseUrl + domainUtil.canBuyStock + queryString;
+		String totalUrl = domainUtil.baseUrl + domainUtil.canBuyStock;
 
 		String CANO = "";
 		String ACNT_PRDT_CD = "01";
@@ -53,7 +52,10 @@ public class TradeServiceImpl implements TradeService {
 		String CMA_EVLU_AMT_ICLD_YN = "N";
 		String OVRS_ICLD_YN = "N";
 
-		HttpResponse<String> response = httpUtil.requestGETHttp(totalUrl, tokenResult, this.appKey, this.appSecret, "TTTC8908R", "canBuyStock");
+		queryString = "?CANO=" + CANO + "&ACNT_PRDT_CD=" + ACNT_PRDT_CD + "&PDNO=" + PDNO + "&ORD_UNPR=" + ORD_UNPR + "&ORD_DVSN=" + ORD_DVSN + "&CMA_EVLU_AMT_ICLD_YN=" + CMA_EVLU_AMT_ICLD_YN + "&OVRS_ICLD_YN=" + OVRS_ICLD_YN;
+		totalUrl += queryString;
+
+		HttpResponse<String> response = HttpUtil.requestGETHttp(totalUrl, tokenResult, this.appKey, this.appSecret, "TTTC8908R", "canBuyStock");
 //		try {
 //			HttpClient client = HttpClient.newHttpClient();
 //			HttpRequest request = HttpRequest.newBuilder()
@@ -93,7 +95,7 @@ public class TradeServiceImpl implements TradeService {
 		String queryString = "?CANO=" + CANO + "&ACNT_PRDT_CD=" + ACNT_PRDT_CD + "&PDNO" + PDNO;
 		String totalUrl = domainUtil.baseUrl + domainUtil.canSellStock + queryString;
 
-		HttpResponse<String> response = httpUtil.requestGETHttp(totalUrl, tokenResult, this.appKey, this.appSecret, "TTTC8408R", "canSellStock");
+		HttpResponse<String> response = HttpUtil.requestGETHttp(totalUrl, tokenResult, this.appKey, this.appSecret, "TTTC8408R", "canSellStock");
 
 //		try {
 //			HttpClient client = HttpClient.newHttpClient();
@@ -127,8 +129,8 @@ public class TradeServiceImpl implements TradeService {
 	 */
 	@Override
 	public void buyStock(TokenResult tokenResult) {
-		String CANO = ""; // 종합계좌번호
-		String ACNT_PRDT_CD = ""; // 계좌상품코드
+		String CANO = ""; // 종합계좌번호 앞 8자리
+		String ACNT_PRDT_CD = ""; // 계좌상품코드 뒤 2자리
 		String PDNO = ""; // 보유종목 코드
 		String ORD_DVSN = "01"; // 주문 구분 - 시장가로 고정
 		String ORD_QTY = ""; // 주문수량
@@ -143,9 +145,9 @@ public class TradeServiceImpl implements TradeService {
 		body.addProperty("ORD_UNPR", ORD_UNPR);
 
 
-		String queryString = "?CANO=" + CANO + "&ACNT_PRDT_CD=" + ACNT_PRDT_CD + "&PDNO=" + PDNO + "&ORD_DVSN=" + ORD_DVSN + "&ORD_QTY=" + ORD_QTY + "&ORD_UNPR=" + ORD_UNPR;
-		String totalUrl = domainUtil.baseUrl + domainUtil.buyStock + queryString;
+		//String queryString = "?CANO=" + CANO + "&ACNT_PRDT_CD=" + ACNT_PRDT_CD + "&PDNO=" + PDNO + "&ORD_DVSN=" + ORD_DVSN + "&ORD_QTY=" + ORD_QTY + "&ORD_UNPR=" + ORD_UNPR;
+		String totalUrl = domainUtil.baseUrl + domainUtil.buyStock;
 
-		HttpResponse<String> response = httpUtil.requestPOSTHttp(totalUrl, tokenResult, this.appKey, this.appSecret, "TTTC0011U", "buyStock", body.toString());
+		HttpResponse<String> response = HttpUtil.requestPOSTHttp(totalUrl, tokenResult, this.appKey, this.appSecret, "TTTC0011U", "buyStock", body.toString());
 	}
 }

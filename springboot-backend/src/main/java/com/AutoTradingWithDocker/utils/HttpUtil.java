@@ -4,6 +4,7 @@ import com.AutoTradingWithDocker.model.TokenResult;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -11,8 +12,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Slf4j
+@Component
 public class HttpUtil {
-	public HttpResponse<String> requestGETHttp (String url, TokenResult tokenResult, String appkey, String appsecret, String trId, String method) {
+	public static HttpResponse<String> requestGETHttp (String url, TokenResult tokenResult, String appkey, String appsecret, String trId, String method) {
 		try {
 			HttpClient client = HttpClient.newHttpClient();
 			HttpRequest request = HttpRequest.newBuilder()
@@ -40,7 +42,7 @@ public class HttpUtil {
 		return null;
 	}
 
-	public HttpResponse<String> requestPOSTHttp (String url, TokenResult tokenResult, String appkey, String appsecret, String trId, String method, String body) {
+	public static HttpResponse<String> requestPOSTHttp (String url, TokenResult tokenResult, String appkey, String appsecret, String trId, String method, String body) {
 		try {
 			HttpClient client = HttpClient.newHttpClient();
 			HttpRequest request = HttpRequest.newBuilder()
