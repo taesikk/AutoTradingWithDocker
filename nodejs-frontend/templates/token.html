@@ -123,18 +123,18 @@
     <input type="text" id="appsecret" placeholder="한국투자증권 홈페이지에서 발급받은 appsecret">
   </div>
 
-  <button class="submit-btn" onclick="requestToken()">토큰 발급</button>
+  <button class="submit-btn" id="tokenBtn">토큰 발급</button>
 
   <h3 style="margin-top:30px;">발급 결과</h3>
 
   <div class="form-group">
     <label>access_token</label>
-    <input type="text" id="access_token" readonly>
+    <input type="text" id="accessToken" readonly>
   </div>
 
   <div class="form-group">
     <label>expires_in(유효기간)</label>
-    <input type="text" id="expires_in" readonly>
+    <input type="text" id="expiresIn" readonly>
   </div>
 
   <button class="back-btn" onclick="location.href='home.html'">← 홈으로 돌아가기</button>
@@ -143,4 +143,6 @@
 
 </body>
 <script src="/static/js/token.js"></script>
+<script src="/static/js/ajax_util.js"></script>
+<script src="/config/config.js"></script>
 </html>
