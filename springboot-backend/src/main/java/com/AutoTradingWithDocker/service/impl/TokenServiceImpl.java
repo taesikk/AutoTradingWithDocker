@@ -28,14 +28,8 @@ public class TokenServiceImpl implements TokenService {
     private final DomainUtil domainUtil;
 	private final TokenProp tokenProp;
 
-	private String grantType;
-	private String appKey;
-	private String appSecret;
 	@Override
-    public TokenResult getAccessToken() {
-		this.grantType = tokenProp.getGrantType();
-		this.appSecret = tokenProp.getAppSecret();
-		this.appKey= tokenProp.getAppKey();
+    public TokenResult getAccessToken(String grantType, String appKey, String appSecret) {
 		String totalUrl = domainUtil.baseUrl + domainUtil.getTokenUrl;
 		// TODO 키값 RDB 전환 고려
 
@@ -74,7 +68,7 @@ public class TokenServiceImpl implements TokenService {
 		}
 
 		return TokenResult.builder()
-				.acccessToken(responseJson.get("access_token").getAsString())
+				.accessToken(responseJson.get("access_token").getAsString())
 				.expiredSec(responseJson.get("expires_in").getAsString())
 				.expiredDate(responseJson.get("access_token_token_expired").getAsString())
 				.build();

@@ -31,7 +31,7 @@ public class TradeTest {
 		String appSecret = tokenProp.getAppSecret();
 		String url = domainUtil.baseUrl + domainUtil.canBuyStock;
 
-		TokenResult tokenResult = tokenService.getAccessToken();
+		TokenResult tokenResult = tokenService.getAccessToken(grantType, appKey, appSecret);
 		log.info("[canBuyStockTest] ==== getAccessToken complete");
 
 		String CANO = "";
@@ -59,7 +59,7 @@ public class TradeTest {
 		String appSecret = tokenProp.getAppSecret();
 		String url = domainUtil.baseUrl + domainUtil.canBuyStock;
 
-		TokenResult tokenResult = tokenService.getAccessToken();
+		TokenResult tokenResult = tokenService.getAccessToken(grantType, appKey, appSecret);
 		log.info("[buyStockTest] ==== getAccessToken complete");
 
 		String CANO = ""; // 종합계좌번호

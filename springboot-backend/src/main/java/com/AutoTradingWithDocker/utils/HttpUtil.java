@@ -20,7 +20,7 @@ public class HttpUtil {
 			HttpRequest request = HttpRequest.newBuilder()
 					.uri(URI.create(url))
 					.headers("content-type", "application/json; charset=utf-8",
-							"authorization", "Bearer " + tokenResult.getAcccessToken(),
+							"authorization", "Bearer " + tokenResult.getAccessToken(),
 							"appkey", appkey,
 							"appsecret", appsecret,
 							"tr_id", trId
@@ -48,7 +48,7 @@ public class HttpUtil {
 			HttpRequest request = HttpRequest.newBuilder()
 					.uri(URI.create(url))
 					.headers("content-type", "application/json; charset=utf-8",
-							"authorization", "Bearer " + tokenResult.getAcccessToken(),
+							"authorization", "Bearer " + tokenResult.getAccessToken(),
 							"appkey", appkey,
 							"appsecret", appsecret,
 							"tr_id", trId

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class TokenResult {
-	private String acccessToken;
+	private String accessToken;
 	private String expiredSec;
 	private String expiredDate;
 }

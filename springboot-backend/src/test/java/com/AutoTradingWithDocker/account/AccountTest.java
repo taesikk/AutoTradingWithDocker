@@ -52,7 +52,7 @@ public class AccountTest {
 
 		String totalUrl = domainUtil.baseUrl + domainUtil.getAccountAmount + queryString;
 
-		TokenResult tokenResult = tokenService.getAccessToken();
+		TokenResult tokenResult = tokenService.getAccessToken(grantType, appKey, appSecret);
 		try {
 			HttpClient client = HttpClient.newHttpClient();
 			HttpRequest request = HttpRequest.newBuilder()

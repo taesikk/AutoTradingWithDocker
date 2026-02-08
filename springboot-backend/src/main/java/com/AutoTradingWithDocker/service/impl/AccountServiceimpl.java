@@ -49,7 +49,7 @@ public class AccountServiceimpl implements AccountService {
 			HttpRequest request = HttpRequest.newBuilder()
 					.uri(URI.create(totalUrl))
 					.headers("content-type", "application/json; charset=utf-8",
-							"authorization", "Bearer " + tokenResult.getAcccessToken(),
+							"authorization", "Bearer " + tokenResult.getAccessToken(),
 							"appkey", this.appKey,
 							"appsecret", this.appSecret,
 							"tr_id", "TTTC8434R"
