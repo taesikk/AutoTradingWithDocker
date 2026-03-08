@@ -30,6 +30,9 @@ var addEvent = function() {
 
         localStorage.setItem('access_token', accessToken);
         localStorage.setItem('expired_date', expiredDate);
+        localStorage.setItem('grant_type', $("#grant_type").val());
+        localStorage.setItem('appkey', $("#appkey").val());
+        localStorage.setItem('appsecret', $("#appsecret").val());
       };
 
       var errorCallback = function(data) {

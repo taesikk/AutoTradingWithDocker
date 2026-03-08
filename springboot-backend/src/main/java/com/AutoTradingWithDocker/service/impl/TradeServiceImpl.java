@@ -39,7 +39,7 @@ public class TradeServiceImpl implements TradeService {
 	 * 종목의 현재 매수 가능량 조회
 	 */
 	@Override
-	public void canBuyStock(TokenResult tokenResult) {
+	public void canBuyStock(TokenResult tokenResult, String accountF, String accountB, String code) {
 		this.setDefaultKey();
 		String queryString = "";
 		String totalUrl = domainUtil.baseUrl + domainUtil.canBuyStock;
@@ -86,7 +86,7 @@ public class TradeServiceImpl implements TradeService {
 	 * 종목의 현재 매도 가능량 조회
  	 */
 	@Override
-	public void canSellStock(TokenResult tokenResult) {
+	public void canSellStock(TokenResult tokenResult, String accountF, String accountB, String code) {
 		this.setDefaultKey();
 		String CANO = ""; // 종합계좌번호
 		String ACNT_PRDT_CD = ""; // 계좌상품코드
