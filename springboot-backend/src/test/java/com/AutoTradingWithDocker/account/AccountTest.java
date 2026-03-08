@@ -58,7 +58,7 @@ public class AccountTest {
 			HttpRequest request = HttpRequest.newBuilder()
 					.uri(URI.create(totalUrl))
 					.headers("content-type", "application/json; charset=utf-8",
-							"authorization", "Bearer " + tokenResult.getAcccessToken(),
+							"authorization", "Bearer ",
 							"appkey", this.appKey,
 							"appsecret", this.appSecret,
 							"tr_id", "TTTC8434R"

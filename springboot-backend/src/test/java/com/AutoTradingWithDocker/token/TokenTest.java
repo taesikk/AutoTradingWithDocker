@@ -27,7 +27,7 @@ public class TokenTest {
 	private TokenProp tokenProp;
 
 	@Test
-	public TokenResult getAccessToken() {
+	public void getAccessToken() {
 		String totalUrl = domainUtil.baseUrl + domainUtil.getTokenUrl;
 		String grantType = tokenProp.getGrantType();
 		String appKey = tokenProp.getAppKey();
@@ -62,10 +62,10 @@ public class TokenTest {
 			log.info("[getAccessToken CatchException] Invalid json data. {}", e.getMessage());
 		}
 
-		return TokenResult.builder()
-				.acccessToken(responseJson.get("access_token").getAsString())
-				.expiredSec(responseJson.get("expires_in").getAsString())
-				.expiredDate(responseJson.get("access_token_token_expired").getAsString())
-				.build();
+//		return TokenResult.builder()
+//				.accessToken(responseJson.get("access_token").getAsString())
+//				.expiredSec(responseJson.get("expires_in").getAsString())
+//				.expiredDate(responseJson.get("access_token_token_expired").getAsString())
+//				.build();
 	}
 }
