@@ -7,6 +7,7 @@ var init = function() {
     addEvent();
     BuyCheck.init();
     SellCheck.init();
+    BuyStock.init();
 };
 
 var addEvent = function() {
@@ -121,6 +122,45 @@ var SellCheck = {
             };
 
             jsonAjax(requestURL, 'POST', true, data, successCallback, errorCallback);
+        });
+    }
+};
+
+var BuyStock = {
+    accountFront: $('#buyAccountFront'),
+    accountBack: $('#buyAccountBack'),
+    code: $('#buyCode'),
+    amount: $('#buyAmount'),
+    
+    init: function() {
+        const _this = this;
+        $('#orderBtn').on('click', function() {
+            const requestURL = window.$config.API_BASE_URL + '/buyStock/' + _this.amount.val() ;
+            const data = {
+                accessToken: localStorage.getItem('access_token'),
+	            appkey: localStorage.getItem('appkey'),
+	            appsecret: localStorage.getItem('appsecret'),
+	            accountFront: _this.accountFront.val(),
+	            accountBack: _this.accountBack.val(),
+	            code: _this.code.val()
+            };
+
+            var successCallback = function(data) {
+                const orderResult = data.data;
+                if (orderResult === 'Y' || orderResult === 'y') {
+                    $('#orderResult').val('주문에 성공하였습니다.');
+                } else {
+                    $('#orderResult').val('주문에 실패하였습니다.');
+                }
+                
+            };
+
+            var errorCallback = function(data) {
+                alert(data);
+            };
+
+            jsonAjax(requestURL, 'POST', true, data, successCallback, errorCallback);
+
         });
     }
 }

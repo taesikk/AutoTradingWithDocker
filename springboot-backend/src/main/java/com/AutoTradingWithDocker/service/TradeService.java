@@ -12,5 +12,5 @@ public interface TradeService {
 	public String canSellStock(TradeBody tradeBody) throws Exception;
 
 	// 주식주문(현금)
-	public void buyStock(TokenResult tokenResult) throws Exception;
+	public String buyStock(TradeBody tradeBody, String amount) throws Exception;
 }

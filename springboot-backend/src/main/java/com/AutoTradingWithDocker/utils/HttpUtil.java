@@ -1,6 +1,5 @@
 package com.AutoTradingWithDocker.utils;
 
-import com.AutoTradingWithDocker.model.TokenResult;
 import com.AutoTradingWithDocker.model.TradeBody;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -44,15 +43,15 @@ public class HttpUtil {
 		return null;
 	}
 
-	public static HttpResponse<String> requestPOSTHttp (String url, TokenResult tokenResult, String appkey, String appsecret, String trId, String method, String body) {
+	public static HttpResponse<String> requestPOSTHttp (String url, TradeBody tradeBody, String trId, String method, String body) {
 		try {
 			HttpClient client = HttpClient.newHttpClient();
 			HttpRequest request = HttpRequest.newBuilder()
 					.uri(URI.create(url))
 					.headers("content-type", "application/json; charset=utf-8",
-							"authorization", "Bearer " + tokenResult.getAccessToken(),
-							"appkey", appkey,
-							"appsecret", appsecret,
+							"authorization", "Bearer " + tradeBody.getAccessToken(),
+							"appkey", tradeBody.getAppkey(),
+							"appsecret", tradeBody.getAppsecret(),
 							"tr_id", trId
 					)
 					.POST(HttpRequest.BodyPublishers.ofString(body))

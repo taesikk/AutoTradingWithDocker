@@ -1,13 +1,11 @@
 package com.AutoTradingWithDocker.controller.trade;
 
 import com.AutoTradingWithDocker.model.CommonResponse;
-import com.AutoTradingWithDocker.model.TokenResult;
 import com.AutoTradingWithDocker.model.TradeBody;
 import com.AutoTradingWithDocker.service.TokenService;
 import com.AutoTradingWithDocker.service.TradeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.el.parser.Token;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,15 +68,24 @@ public class TradeController {
     /**
      * 매수하기
      */
-    @GetMapping(value = "/buyStock", produces = "application/json; charset=UTF8")
-    public ResponseEntity<CommonResponse> buyStock(@RequestParam("accountFront") String accountFront,
-                                                    @RequestParam("accountBack") String accountBack,
-                                                    @RequestParam("code")String code) {
+    @PostMapping(value = "/buyStock/{amount}", produces = "application/json; charset=UTF8")
+    public ResponseEntity<CommonResponse> buyStock(@PathVariable("amount") String amount,
+                                                   @RequestBody TradeBody body) throws Exception {
 
+        if (body.getAppkey().isEmpty() || body.getAppsecret().isEmpty() || body.getAccessToken().isEmpty()) {
+            throw new Exception("Invalid token info.");
+        }
+        if (body.getAccountFront().isEmpty() || body.getAccountBack().isEmpty() || body.getCode().isEmpty()) {
+            throw new Exception("Invalid account info.");
+        }
+        if (amount == null || amount.isEmpty()) {
+            throw new Exception("Not exist amount.");
+        }
+        String result = tradeService.buyStock(body, amount);
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .result("success")
-                .data(null)
+                .data(result)
                 .build());
     }
 

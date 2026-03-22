@@ -10,12 +10,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.el.parser.Token;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Slf4j
@@ -105,13 +101,13 @@ public class TradeServiceImpl implements TradeService {
 	 * 종목 거래
 	 */
 	@Override
-	public void buyStock(TokenResult tokenResult) throws Exception {
-		String CANO = ""; // 종합계좌번호 앞 8자리
-		String ACNT_PRDT_CD = ""; // 계좌상품코드 뒤 2자리
-		String PDNO = ""; // 보유종목 코드
+	public String buyStock(TradeBody tradeBody, String amount) throws Exception {
+		String CANO = tradeBody.getAccountFront(); // 종합계좌번호 앞 8자리
+		String ACNT_PRDT_CD = tradeBody.getAccountBack(); // 계좌상품코드 뒤 2자리
+		String PDNO = tradeBody.getCode(); // 보유종목 코드
 		String ORD_DVSN = "01"; // 주문 구분 - 시장가로 고정
-		String ORD_QTY = ""; // 주문수량
-		String ORD_UNPR = ""; //주문단가 - 시장가 등 주문시, "0"으로 입력
+		String ORD_QTY = amount; // 주문수량
+		String ORD_UNPR = "0"; //주문단가 - 시장가 등 주문시, "0"으로 입력
 
 		JsonObject body = new JsonObject();
 		body.addProperty("CANO", CANO);
@@ -125,6 +121,13 @@ public class TradeServiceImpl implements TradeService {
 		//String queryString = "?CANO=" + CANO + "&ACNT_PRDT_CD=" + ACNT_PRDT_CD + "&PDNO=" + PDNO + "&ORD_DVSN=" + ORD_DVSN + "&ORD_QTY=" + ORD_QTY + "&ORD_UNPR=" + ORD_UNPR;
 		String totalUrl = domainUtil.baseUrl + domainUtil.buyStock;
 
-		HttpResponse<String> response = HttpUtil.requestPOSTHttp(totalUrl, tokenResult, this.appKey, this.appSecret, "TTTC0011U", "buyStock", body.toString());
+		HttpResponse<String> response = HttpUtil.requestPOSTHttp(totalUrl, tradeBody, "TTTC0011U", "buyStock", body.toString());
+		JsonObject jsonObject = (JsonObject) JsonParser.parseString(response.body());
+		JsonObject output = new JsonObject();
+		if (jsonObject.has("rt_cd")) {
+			return jsonObject.get("rt_cd").getAsString();
+		}
+
+		return "N";
 	}
 }
