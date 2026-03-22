@@ -5,57 +5,88 @@ $(document).ready(function() {
 
 var init = function() {
     addEvent();
+    BuyCheck.init();
 };
 
 var addEvent = function() {
     $('#buyTab').on('click', function() {
         $("#buyTab").prop("checked", true);
         $("#sellTab").prop("checked", false);
-        $("#tradeTab").prop("checked", false);
+        $("#tradeBuyTab").prop("checked", false);
+        $("#tradeSellTab").prop("checked", false);
 
         $('#buyArea').removeClass('display-none');
         $('#sellArea').addClass('display-none');
-        $('#tradeArea').addClass('display-none');
+        $('#tradeBuyArea').addClass('display-none');
+        $('#tradeSellArea').addClass('display-none');
     });
 
     $('#sellTab').on('click', function() {
         $("#buyTab").prop("checked", false);
         $("#sellTab").prop("checked", true);
-        $("#tradeTab").prop("checked", false);
+        $("#tradeBuyTab").prop("checked", false);
+        $("#tradeSellTab").prop("checked", false);
 
         $('#buyArea').addClass('display-none');
         $('#sellArea').removeClass('display-none');
-        $('#tradeArea').addClass('display-none');
+        $('#tradeBuyArea').addClass('display-none');
+        $('#tradeSellArea').addClass('display-none');
     });
 
-    $('#tradeTab').on('click', function() {
+    $('#tradeBuyTab').on('click', function() {
         $("#buyTab").prop("checked", false);
         $("#sellTab").prop("checked", false);
-        $("#tradeTab").prop("checked", true);
+        $("#tradeBuyTab").prop("checked", true);
+        $("#tradeSellTab").prop("checked", false);
 
         $('#buyArea').addClass('display-none');
         $('#sellArea').addClass('display-none');
-        $('#tradeArea').removeClass('display-none');
+        $('#tradeBuyArea').removeClass('display-none');
+        $('#tradeSellArea').addClass('display-none');
+    });
+
+    $('#tradeSellTab').on('click', function() {
+        $("#buyTab").prop("checked", false);
+        $("#sellTab").prop("checked", false);
+        $("#tradeTab").prop("checked", false);
+        $("#tradeSellTab").prop("checked", true);
+
+        $('#buyArea').addClass('display-none');
+        $('#sellArea').addClass('display-none');
+        $('#tradeBuyArea').addClass('display-none');
+        $('#tradeSellArea').removeClass('display-none');
     });
 };
 
-var BuyCount = {
-    accountFront: $('#accountFront').text(),
-    accountBack: $('#accountBack').text(),
-    code: $('#code').text(),
+var BuyCheck = {
+    accountFront: $('#buyCheckAccountFront'),
+    accountBack: $('#buyCheckAccountBack'),
+    code: $('#buyCheckCode'),
 
     init: function() {
+        const _this = this;
         $('#buyCheckBtn').on('click', function() {
-            var requestURL = window.$config.API_BASE_URL;
+            const requestURL = window.$config.API_BASE_URL + '/buyCheck';
+            const data = {
+                accessToken: localStorage.getItem('access_token'),
+	            appkey: localStorage.getItem('appkey'),
+	            appsecret: localStorage.getItem('appsecret'),
+	            accountFront: _this.accountFront.val(),
+	            accountBack: _this.accountBack.val(),
+	            code: _this.code.val()
+            };
 
 
             var successCallback = function(data) {
-                
+                const buyCount = data.data;
+                $('#buyAvailableQty').val(buyCount);
             };
 
             var errorCallback = function(data) {
-                alert('error !!! ');
-            }
+                alert(data);
+            };
+
+            jsonAjax(requestURL, 'POST', true, data, successCallback, errorCallback);
         });
     }
 }

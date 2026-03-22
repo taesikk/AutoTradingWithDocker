@@ -31,7 +31,7 @@ public class TradeTest {
 		String appSecret = tokenProp.getAppSecret();
 		String url = domainUtil.baseUrl + domainUtil.canBuyStock;
 
-		TokenResult tokenResult = tokenService.getAccessToken(grantType, appKey, appSecret);
+		TokenResult tokenResult = null;//tokenService.getAccessToken(grantType, appKey, appSecret);
 		log.info("[canBuyStockTest] ==== getAccessToken complete");
 
 		String CANO = "";
@@ -44,9 +44,9 @@ public class TradeTest {
 
 		String queryString = "?CANO=" + CANO + "&ACNT_PRDT_CD=" + ACNT_PRDT_CD + "&PDNO=" + PDNO + "&ORD_UNPR=" + ORD_UNPR + "&ORD_DVSN=" + ORD_DVSN + "&CMA_EVLU_AMT_ICLD_YN=" + CMA_EVLU_AMT_ICLD_YN + "&OVRS_ICLD_YN=" + OVRS_ICLD_YN;
 
-		HttpResponse<String> response = HttpUtil.requestGETHttp(url + queryString, tokenResult, appKey, appSecret, "TTTC8908R", "canBuyStockTest");
+		//HttpResponse<String> response = HttpUtil.requestGETHttp(url + queryString, tokenResult, appKey, appSecret, "TTTC8908R", "canBuyStockTest");
 		log.info("[canBuyStockTest] ==== canBuyStockTest complete");
-		log.info(response.body());
+		//log.info(response.body());
 		// ord_psbl_cash - 예수금
 		// nrcvb_buy_qty - 주문 가능량
 
@@ -59,7 +59,7 @@ public class TradeTest {
 		String appSecret = tokenProp.getAppSecret();
 		String url = domainUtil.baseUrl + domainUtil.canBuyStock;
 
-		TokenResult tokenResult = tokenService.getAccessToken(grantType, appKey, appSecret);
+		TokenResult tokenResult = null; //tokenService.getAccessToken(grantType, appKey, appSecret);
 		log.info("[buyStockTest] ==== getAccessToken complete");
 
 		String CANO = ""; // 종합계좌번호
@@ -81,6 +81,6 @@ public class TradeTest {
 
 		HttpResponse<String> response = HttpUtil.requestPOSTHttp(url, tokenResult, appKey, appSecret, "TTTC0011U", "buyStockTest", body.toString());
 		log.info("[BuyStockTest] ==== BuyStockTest complete");
-		log.info(response.body());
+		//log.info(response.body());
 	}
 }

@@ -1,6 +1,7 @@
 package com.AutoTradingWithDocker.utils;
 
 import com.AutoTradingWithDocker.model.TokenResult;
+import com.AutoTradingWithDocker.model.TradeBody;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
@@ -14,15 +15,15 @@ import java.net.http.HttpResponse;
 @Slf4j
 @Component
 public class HttpUtil {
-	public static HttpResponse<String> requestGETHttp (String url, TokenResult tokenResult, String appkey, String appsecret, String trId, String method) {
+	public static HttpResponse<String> requestGETHttp (String url, TradeBody tradeBody, String trId, String method) {
 		try {
 			HttpClient client = HttpClient.newHttpClient();
 			HttpRequest request = HttpRequest.newBuilder()
 					.uri(URI.create(url))
 					.headers("content-type", "application/json; charset=utf-8",
-							"authorization", "Bearer " + tokenResult.getAccessToken(),
-							"appkey", appkey,
-							"appsecret", appsecret,
+							"authorization", "Bearer " + tradeBody.getAccessToken(),
+							"appkey", tradeBody.getAppkey(),
+							"appsecret", tradeBody.getAppsecret(),
 							"tr_id", trId
 					)
 					.GET()

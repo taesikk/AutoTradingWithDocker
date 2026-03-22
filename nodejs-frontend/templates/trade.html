@@ -79,9 +79,10 @@ header h3 {
   display: none;
 }
 
-#tab1:checked ~ .content #content1,
-#tab2:checked ~ .content #content2,
-#tab3:checked ~ .content #content3 {
+#buyTab:checked ~ .content #buyArea,
+#sellTab:checked ~ .content #sellArea,
+#tradeBuyTab:checked ~ .content #tradeBuyArea,
+#tradeSellTab:checked ~ .content #tradeSellArea {
   display: block;
 }
 
@@ -156,8 +157,11 @@ input[readonly] {
     <input type="radio" id="sellTab" name="tab">
     <label for="sellTab">매도 가능 조회</label>
 
-    <input type="radio" id="tradeTab" name="tab">
-    <label for="tradeTab">주식 주문</label>
+    <input type="radio" id="tradeBuyTab" name="tab">
+    <label for="tradeBuyTab">주식 매수 주문</label>
+
+    <input type="radio" id="tradeSellTab" name="tab">
+    <label for="tradeSellTab">주식 매도 주문</label>
   </div>
 
   <div class="content">
@@ -166,15 +170,15 @@ input[readonly] {
     <div id="buyArea" class="">
       <div class="form-group">
         <label>계좌 앞 8자리</label>
-        <input type="text" id="accountFront" maxlength="8">
+        <input type="text" id="buyCheckAccountFront" maxlength="8">
       </div>
       <div class="form-group">
         <label>계좌 뒤 2자리</label>
-        <input type="text" id="accountBack" maxlength="2">
+        <input type="text" id="buyCheckAccountBack" maxlength="2">
       </div>
       <div class="form-group">
         <label>종목번호 (6자리)</label>
-        <input type="text" id="code" maxlength="6">
+        <input type="text" id="buyCheckCode" maxlength="6">
       </div>
 
       <button class="btn buy-btn" id="buyCheckBtn">매수 가능 조회</button>
@@ -208,8 +212,8 @@ input[readonly] {
       </div>
     </div>
 
-    <!-- 주식 주문 -->
-    <div id="tradeArea" class="display-none">
+    <!-- 주식 매수 주문 -->
+    <div id="tradeBuyArea" class="display-none">
       <div class="form-group">
         <label>계좌 앞 8자리</label>
         <input type="text" id="order_acnt_front" maxlength="8">
@@ -232,6 +236,34 @@ input[readonly] {
       <div class="form-group">
         <label>주문 결과</label>
         <input type="text" id="order_result" readonly>
+      </div>
+    </div>
+
+    <!-- 주식 매도 주문 --> 
+    <div id="tradeSellArea" class="display-none">
+      <div class="form-group">
+        <label>계좌 앞 8자리</label>
+        <input type="text" id="sell_order_acnt_front" maxlength="8">
+      </div>
+      <div class="form-group">
+        <label>계좌 뒤 2자리</label>
+        <input type="text" id="sell_order_acnt_back" maxlength="2">
+      </div>
+      <div class="form-group">
+        <label>종목번호 (6자리)</label>
+        <input type="text" id="sell_order_stock_code" maxlength="6">
+      </div>
+      <div class="form-group">
+        <label>주문 수량</label>
+        <input type="number" id="sell_order_qty">
+      </div>
+
+      <!-- 🔴 매도 버튼 -->
+      <button class="btn sell-btn" id="sellOrderBtn">매도 주문 실행</button>
+
+      <div class="form-group">
+        <label>주문 결과</label>
+        <input type="text" id="sell_order_result" readonly>
       </div>
     </div>
 
