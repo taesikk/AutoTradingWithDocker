@@ -9,7 +9,7 @@ public interface TradeService {
 	public String canBuyStock(TradeBody tradeBody) throws Exception;
 
 	// 매도 가능 조회
-	public void canSellStock(TradeBody tradeBody) throws Exception;
+	public String canSellStock(TradeBody tradeBody) throws Exception;
 
 	// 주식주문(현금)
 	public void buyStock(TokenResult tokenResult) throws Exception;

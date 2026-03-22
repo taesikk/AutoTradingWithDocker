@@ -6,6 +6,7 @@ $(document).ready(function() {
 var init = function() {
     addEvent();
     BuyCheck.init();
+    SellCheck.init();
 };
 
 var addEvent = function() {
@@ -80,6 +81,39 @@ var BuyCheck = {
             var successCallback = function(data) {
                 const buyCount = data.data;
                 $('#buyAvailableQty').val(buyCount);
+            };
+
+            var errorCallback = function(data) {
+                alert(data);
+            };
+
+            jsonAjax(requestURL, 'POST', true, data, successCallback, errorCallback);
+        });
+    }
+};
+
+var SellCheck = {
+    accountFront: $('#sellCheckAccountFront'),
+    accountBack: $('#sellCheckAccountBack'),
+    code: $('#sellCheckCode'),
+
+    init: function() {
+        const _this = this;
+        $('#sellCheckBtn').on('click', function() {
+            const requestURL = window.$config.API_BASE_URL + '/sellCheck';
+            const data = {
+                accessToken: localStorage.getItem('access_token'),
+	            appkey: localStorage.getItem('appkey'),
+	            appsecret: localStorage.getItem('appsecret'),
+	            accountFront: _this.accountFront.val(),
+	            accountBack: _this.accountBack.val(),
+	            code: _this.code.val()
+            };
+
+
+            var successCallback = function(data) {
+                const sellCount = data.data;
+                $('#sellAvailableQty').val(sellCount);
             };
 
             var errorCallback = function(data) {

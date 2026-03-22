@@ -24,7 +24,8 @@ public class HttpUtil {
 							"authorization", "Bearer " + tradeBody.getAccessToken(),
 							"appkey", tradeBody.getAppkey(),
 							"appsecret", tradeBody.getAppsecret(),
-							"tr_id", trId
+							"tr_id", trId,
+							"custtype", "P" // 개인
 					)
 					.GET()
 					.build();

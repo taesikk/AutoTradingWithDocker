@@ -48,15 +48,21 @@ public class TradeController {
      * 매도 가능 조회
      *
      */
-    @GetMapping(value = "/sellCheck", produces = "application/json; charset=UTF8")
-    public ResponseEntity<CommonResponse> sellCheck(@RequestParam("accountFront") String accountFront,
-                                                   @RequestParam("accountBack") String accountBack,
-                                                   @RequestParam("code")String code) {
+    @PostMapping(value = "/sellCheck", produces = "application/json; charset=UTF8")
+    public ResponseEntity<CommonResponse> sellCheck(@RequestBody TradeBody body) throws Exception{
 
+        if (body.getAppkey().isEmpty() || body.getAppsecret().isEmpty() || body.getAccessToken().isEmpty()) {
+            throw new Exception("Invalid token info.");
+        }
+        if (body.getAccountFront().isEmpty() || body.getAccountBack().isEmpty() || body.getCode().isEmpty()) {
+            throw new Exception("Invalid account info.");
+        }
+
+        String result = tradeService.canSellStock(body);
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .result("success")
-                .data(null)
+                .data(result)
                 .build());
     }
 

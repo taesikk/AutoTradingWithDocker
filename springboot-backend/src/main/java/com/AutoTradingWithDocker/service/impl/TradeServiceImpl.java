@@ -62,9 +62,11 @@ public class TradeServiceImpl implements TradeService {
 			throw new Exception("Not exist Http response");
 		}
 		JsonObject jsonObject = (JsonObject) JsonParser.parseString(response.body());
-		JsonObject output = jsonObject.get("output").getAsJsonObject();
-		return output.get("nrcvb_buy_qty").getAsString();
-
+		if (jsonObject.has("output")) {
+			JsonObject output = jsonObject.get("output").getAsJsonObject();
+			return output.get("nrcvb_buy_qty").getAsString();
+		}
+		return "";
 	}
 
 	/**
@@ -73,39 +75,27 @@ public class TradeServiceImpl implements TradeService {
 	 * 종목의 현재 매도 가능량 조회
  	 */
 	@Override
-	public void canSellStock(TradeBody tradeBody) throws Exception {
+	public String canSellStock(TradeBody tradeBody) throws Exception {
 		this.setDefaultKey();
 		String CANO = tradeBody.getAccountFront(); // 계좌번호 앞 8자리
 		String ACNT_PRDT_CD = tradeBody.getAccountBack(); // 계좌번호 뒤 2자리
 		String PDNO = tradeBody.getCode(); // 종목 코드
 
-		String queryString = "?CANO=" + CANO + "&ACNT_PRDT_CD=" + ACNT_PRDT_CD + "&PDNO" + PDNO;
+		String queryString = "?CANO=" + CANO + "&ACNT_PRDT_CD=" + ACNT_PRDT_CD + "&PDNO=" + PDNO;
 		String totalUrl = domainUtil.baseUrl + domainUtil.canSellStock + queryString;
 
 		HttpResponse<String> response = HttpUtil.requestGETHttp(totalUrl, tradeBody, "TTTC8408R", "canSellStock");
+		if (response.body().isEmpty()) {
+			throw new Exception("Not exist Http response");
+		}
+		JsonObject jsonObject = (JsonObject) JsonParser.parseString(response.body());
+		JsonObject output = new JsonObject();
+		if (jsonObject.has("output")) {
+			output = jsonObject.get("output").getAsJsonObject();
+			return output.get("ord_psbl_qty").getAsString();
+		}
 
-//		try {
-//			HttpClient client = HttpClient.newHttpClient();
-//			HttpRequest request = HttpRequest.newBuilder()
-//					.uri(URI.create(totalUrl))
-//					.headers("content-type", "application/json; charset=utf-8",
-//							"authorization", "Bearer " + tokenResult.getAcccessToken(),
-//							"appkey", this.appKey,
-//							"appsecret", this.appSecret,
-//							"tr_id", "TTTC8408R"
-//					)
-//					.GET()
-//					.build();
-//
-//			log.info("[canSellStock] ========== Request : {}", request.toString());
-//			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-//			log.info("[canSellStock] ========== Response : {}", response.toString());
-//
-//			JsonObject responseJson = JsonParser.parseString(response.body()).getAsJsonObject();
-//			log.info("[canSellStock] ========== responseJson String : {}", responseJson.toString());
-//		} catch (Exception e) {
-//			log.info("[canSellStock CatchException] Invalid json data. {}", e.getMessage());
-//		}
+		return "";
 
 	}
 
