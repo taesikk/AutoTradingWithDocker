@@ -1,0 +1,133 @@
+package com.AutoTradingWithDocker.service.impl;
+
+import com.AutoTradingWithDocker.config.TokenProp;
+import com.AutoTradingWithDocker.model.TokenResult;
+import com.AutoTradingWithDocker.model.TradeBody;
+import com.AutoTradingWithDocker.service.TradeService;
+import com.AutoTradingWithDocker.utils.DomainUtil;
+import com.AutoTradingWithDocker.utils.HttpUtil;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.net.http.HttpResponse;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class TradeServiceImpl implements TradeService {
+	private final DomainUtil domainUtil;
+	private final TokenProp tokenProp;
+
+	private String grantType;
+	private String appKey;
+	private String appSecret;
+	private void setDefaultKey() {
+		this.grantType = tokenProp.getGrantType();
+		this.appSecret = tokenProp.getAppSecret();
+		this.appKey= tokenProp.getAppKey();
+	}
+
+	/**
+	 * 매수 가능 조회
+	 *
+	 * 종목의 현재 매수 가능량 조회
+	 */
+	@Override
+	public String canBuyStock(TradeBody tradeBody) throws Exception {
+		this.setDefaultKey();
+		String queryString = "";
+		String totalUrl = domainUtil.baseUrl + domainUtil.canBuyStock;
+
+		String CANO = tradeBody.getAccountFront();
+		String ACNT_PRDT_CD = tradeBody.getAccountBack();
+		String PDNO = tradeBody.getCode();
+		String ORD_UNPR = "";
+		String ORD_DVSN = "01";
+		String CMA_EVLU_AMT_ICLD_YN = "N";
+		String OVRS_ICLD_YN = "N";
+
+		queryString = "?CANO=" + CANO + "&ACNT_PRDT_CD=" + ACNT_PRDT_CD + "&PDNO=" + PDNO + "&ORD_UNPR=" + ORD_UNPR + "&ORD_DVSN=" + ORD_DVSN + "&CMA_EVLU_AMT_ICLD_YN=" + CMA_EVLU_AMT_ICLD_YN + "&OVRS_ICLD_YN=" + OVRS_ICLD_YN;
+		totalUrl += queryString;
+
+		HttpResponse<String> response = HttpUtil.requestGETHttp(totalUrl, tradeBody, "TTTC8908R", "canBuyStock");
+
+		if (response.body().isEmpty()) {
+			throw new Exception("Not exist Http response");
+		}
+		JsonObject jsonObject = (JsonObject) JsonParser.parseString(response.body());
+		if (jsonObject.has("output")) {
+			JsonObject output = jsonObject.get("output").getAsJsonObject();
+			return output.get("nrcvb_buy_qty").getAsString();
+		}
+		return "";
+	}
+
+	/**
+	 * 매도 가능 조회
+	 *
+	 * 종목의 현재 매도 가능량 조회
+ 	 */
+	@Override
+	public String canSellStock(TradeBody tradeBody) throws Exception {
+		this.setDefaultKey();
+		String CANO = tradeBody.getAccountFront(); // 계좌번호 앞 8자리
+		String ACNT_PRDT_CD = tradeBody.getAccountBack(); // 계좌번호 뒤 2자리
+		String PDNO = tradeBody.getCode(); // 종목 코드
+
+		String queryString = "?CANO=" + CANO + "&ACNT_PRDT_CD=" + ACNT_PRDT_CD + "&PDNO=" + PDNO;
+		String totalUrl = domainUtil.baseUrl + domainUtil.canSellStock + queryString;
+
+		HttpResponse<String> response = HttpUtil.requestGETHttp(totalUrl, tradeBody, "TTTC8408R", "canSellStock");
+		if (response.body().isEmpty()) {
+			throw new Exception("Not exist Http response");
+		}
+		JsonObject jsonObject = (JsonObject) JsonParser.parseString(response.body());
+		JsonObject output = new JsonObject();
+		if (jsonObject.has("output")) {
+			output = jsonObject.get("output").getAsJsonObject();
+			return output.get("ord_psbl_qty").getAsString();
+		}
+
+		return "";
+
+	}
+
+	/**
+	 * 주식주문(현금)
+	 *
+	 * 종목 거래
+	 */
+	@Override
+	public String buyStock(TradeBody tradeBody, String amount) throws Exception {
+		String CANO = tradeBody.getAccountFront(); // 종합계좌번호 앞 8자리
+		String ACNT_PRDT_CD = tradeBody.getAccountBack(); // 계좌상품코드 뒤 2자리
+		String PDNO = tradeBody.getCode(); // 보유종목 코드
+		String ORD_DVSN = "01"; // 주문 구분 - 시장가로 고정
+		String ORD_QTY = amount; // 주문수량
+		String ORD_UNPR = "0"; //주문단가 - 시장가 등 주문시, "0"으로 입력
+
+		JsonObject body = new JsonObject();
+		body.addProperty("CANO", CANO);
+		body.addProperty("ACNT_PRDT_CD", ACNT_PRDT_CD);
+		body.addProperty("PDNO", PDNO);
+		body.addProperty("ORD_DVSN", ORD_DVSN);
+		body.addProperty("ORD_QTY", ORD_QTY);
+		body.addProperty("ORD_UNPR", ORD_UNPR);
+
+
+		//String queryString = "?CANO=" + CANO + "&ACNT_PRDT_CD=" + ACNT_PRDT_CD + "&PDNO=" + PDNO + "&ORD_DVSN=" + ORD_DVSN + "&ORD_QTY=" + ORD_QTY + "&ORD_UNPR=" + ORD_UNPR;
+		String totalUrl = domainUtil.baseUrl + domainUtil.buyStock;
+
+		HttpResponse<String> response = HttpUtil.requestPOSTHttp(totalUrl, tradeBody, "TTTC0011U", "buyStock", body.toString());
+		JsonObject jsonObject = (JsonObject) JsonParser.parseString(response.body());
+		JsonObject output = new JsonObject();
+		if (jsonObject.has("rt_cd")) {
+			return jsonObject.get("rt_cd").getAsString();
+		}
+
+		return "N";
+	}
+}

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>토큰 발급</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 40px 20px 20px;
+      text-align: center;
+    }
+
+    header h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    header h3 {
+      font-weight: normal;
+      color: #666;
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 360px;
+      margin-top: 30px;
+    }
+
+    .form-container h3 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-size: 14px;
+      color: #555;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    input[readonly] {
+      background: #e9ecef;
+      cursor: not-allowed;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .back-btn {
+      margin-top: 15px;
+      font-size: 14px;
+      cursor: pointer;
+      color: #007bff;
+      background: none;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h2>한국투자증권 토큰 발급</h2>
+  <h3>API 연동을 위한 인증 토큰을 발급합니다.</h3>
+</header>
+
+<div class="form-container">
+
+  <h3>입력 정보</h3>
+
+  <div class="form-group">
+    <label>grant_type</label>
+    <input type="text" id="grant_type" placeholder="ex) client_credentials">
+  </div>
+
+  <div class="form-group">
+    <label>appkey</label>
+    <input type="text" id="appkey" placeholder="한국투자증권 홈페이지에서 발급받은 appkey">
+  </div>
+
+  <div class="form-group">
+    <label>appsecret</label>
+    <input type="text" id="appsecret" placeholder="한국투자증권 홈페이지에서 발급받은 appsecret">
+  </div>
+
+  <button class="submit-btn" id="tokenBtn">토큰 발급</button>
+
+  <h3 style="margin-top:30px;">발급 결과</h3>
+
+  <div class="form-group">
+    <label>access_token</label>
+    <input type="text" id="accessToken" readonly>
+  </div>
+
+  <div class="form-group">
+    <label>expires_in(유효기간)</label>
+    <input type="text" id="expiresIn" readonly>
+  </div>
+
+  <button class="back-btn" onclick="location.href='home.html'">← 홈으로 돌아가기</button>
+
+</div>
+
+</body>
+<script src="/static/js/token.js"></script>
+<script src="/static/js/ajax_util.js"></script>
+<script src="/config/config.js"></script>
+</html>

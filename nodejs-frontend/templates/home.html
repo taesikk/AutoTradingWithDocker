@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Devnest Home</title>
+  <title>주식 트레이딩 봇</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     body {
@@ -64,22 +64,114 @@
         width: 100%;
       }
     }
+
+    /* 토큰 패널 */
+    .token-panel {
+      position: fixed;
+      bottom: 200px;
+      align-items: center; /* 👉 우측으로 가고 싶으면 right:20px */
+      width: 260px;
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+      z-index: 1000;
+    }
+
+    .token-panel h4 {
+      margin: 0 0 15px;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .token-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .token-item .label {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .token-item .value {
+      font-weight: 600;
+      font-size: 14px;
+      max-width: 140px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* 상태 표시 */
+    .token-status {
+      text-align: center;
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .token-status.valid {
+      background-color: #e6f4ea;
+      color: #2e7d32;
+    }
+
+    .token-status.expired {
+      background-color: #fdecea;
+      color: #c62828;
+    }
+
+    /* 모바일에서는 숨김 */
+    @media (max-width: 900px) {
+      .token-panel {
+        display: none;
+      }
+    }
+
   </style>
 </head>
 <body>
 
   <header>
     <h2>오토 트레이딩 봇 with 한국투자증권</h2>
-    <h3>원하는 날짜에 자동으로 주식을 매매할 수 있습니다.</h3>
+    <h3>원하는 종목을 매수, 매도할 수 있습니다.</h3>
   </header>
 
+  <!-- 토큰 정보 패널 -->
+  <div class="token-panel">
+    <h4>🔐 Access Token</h4>
+
+    <div class="token-item">
+      <span class="label">토큰</span>
+      <span class="value" id="accessToken">
+      </span>
+    </div>
+
+    <div class="token-item">
+      <span class="label">만료일</span>
+      <span class="value" id="tokenExpire">
+      </span>
+    </div>
+
+    <div class="token-status valid" id="tokenStatus">
+      ● 유효
+    </div>
+  </div>
+
+
   <div class="menu-container">
-    <button class="menu-button" onclick="location.href='community.html'">커뮤니티</button>
-    <button class="menu-button" onclick="location.href='notice.html'">공지사항</button>
-    <button class="menu-button" onclick="location.href='qna.html'">Q&A</button>
-    <button class="menu-button" onclick="location.href='profile.html'">내 프로필</button>
+    <button class="menu-button" onclick="location.href='token.html'">토큰 발급(필수)</button>
+    <button class="menu-button" onclick="location.href='trade.html'">주식 매매</button>
+    <button class="menu-button" onclick="location.href='trade_log.html'">주식 적립식 매수 등록 (임시)</button>
+    <button class="menu-button" onclick="location.href='my_account.html'">관리자 문의</button>
     <!-- 더 추가 가능 -->
   </div>
 
 </body>
+<script src="/static/js/home.js"></script>
+<script src="/static/js/ajax_util.js"></script>
+<script src="/config/config.js"></script>
 </html>
