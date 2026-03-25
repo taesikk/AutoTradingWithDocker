@@ -19,10 +19,10 @@ public class TradeScheduler {
 	public void autoTradeSP500() {
 		log.info("[AutoTrade] ========== Start auto trade S&P500");
 
-		TokenResult token = tokenService.getAccessToken();
-
-		if (token.getAcccessToken() == null || token.getAcccessToken().equals("")) {
-			throw new RuntimeException("Not exist access token.");
-		}
+//		TokenResult token = tokenService.getAccessToken();
+//
+//		if (token.getAcccessToken() == null || token.getAcccessToken().equals("")) {
+//			throw new RuntimeException("Not exist access token.");
+//		}
 	}
 }
