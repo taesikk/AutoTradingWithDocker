@@ -79,7 +79,7 @@ public class TradeTest {
 
 		String queryString = "?CANO=" + CANO + "&ACNT_PRDT_CD=" + ACNT_PRDT_CD + "&PDNO=" + PDNO + "&ORD_DVSN=" + ORD_DVSN + "&ORD_QTY=" + ORD_QTY + "&ORD_UNPR=" + ORD_UNPR;
 
-		HttpResponse<String> response = HttpUtil.requestPOSTHttp(url, tokenResult, appKey, appSecret, "TTTC0011U", "buyStockTest", body.toString());
+		//HttpResponse<String> response = HttpUtil.requestPOSTHttp(url, tokenResult, appKey, appSecret, "TTTC0011U", "buyStockTest", body.toString());
 		log.info("[BuyStockTest] ==== BuyStockTest complete");
 		//log.info(response.body());
 	}
