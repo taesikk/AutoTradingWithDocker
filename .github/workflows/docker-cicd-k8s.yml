@@ -34,7 +34,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}
           tags: |
             type=raw,value=latest
-            type=sha,prefix{{branch}}-
+            type=sha,prefix={{branch}}-
 
       - name: Build and push Backend image
         uses: docker/build-push-action@v5
