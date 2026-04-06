@@ -163,4 +163,42 @@ var BuyStock = {
 
         });
     }
+};
+
+var SellStock = {
+    accountFront: $('#sellAccountFront'),
+    accountBack: $('#sellAccountBack'),
+    code: $('#sellCode'),
+    amount: $('#sellAmount'),
+    init: function() {
+        const _this = this;
+        $('#orderBtn').on('click', function() {
+            const requestURL = window.$config.API_BASE_URL + '/sellStock/' + _this.amount.val() ;
+            const data = {
+                accessToken: localStorage.getItem('access_token'),
+	            appkey: localStorage.getItem('appkey'),
+	            appsecret: localStorage.getItem('appsecret'),
+	            accountFront: _this.accountFront.val(),
+	            accountBack: _this.accountBack.val(),
+	            code: _this.code.val()
+            };
+
+            var successCallback = function(data) {
+                const orderResult = data.data;
+                if (orderResult === 'Y' || orderResult === 'y') {
+                    $('#sellOrderResult').val('주문에 성공하였습니다.');
+                } else {
+                    $('#sellOrderResult').val('주문에 실패하였습니다.');
+                }
+                
+            };
+
+            var errorCallback = function(data) {
+                alert(data);
+            };
+
+            jsonAjax(requestURL, 'POST', true, data, successCallback, errorCallback);
+
+        });
+    }
 }

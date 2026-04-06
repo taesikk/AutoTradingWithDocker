@@ -101,7 +101,7 @@ public class TradeServiceImpl implements TradeService {
 	 * 종목 거래
 	 */
 	@Override
-	public String buyStock(TradeBody tradeBody, String amount) throws Exception {
+	public String tradeStock(TradeBody tradeBody, String amount, String trId) throws Exception {
 		String CANO = tradeBody.getAccountFront(); // 종합계좌번호 앞 8자리
 		String ACNT_PRDT_CD = tradeBody.getAccountBack(); // 계좌상품코드 뒤 2자리
 		String PDNO = tradeBody.getCode(); // 보유종목 코드
@@ -121,7 +121,7 @@ public class TradeServiceImpl implements TradeService {
 		//String queryString = "?CANO=" + CANO + "&ACNT_PRDT_CD=" + ACNT_PRDT_CD + "&PDNO=" + PDNO + "&ORD_DVSN=" + ORD_DVSN + "&ORD_QTY=" + ORD_QTY + "&ORD_UNPR=" + ORD_UNPR;
 		String totalUrl = domainUtil.baseUrl + domainUtil.buyStock;
 
-		HttpResponse<String> response = HttpUtil.requestPOSTHttp(totalUrl, tradeBody, "TTTC0011U", "buyStock", body.toString());
+		HttpResponse<String> response = HttpUtil.requestPOSTHttp(totalUrl, tradeBody, trId, "buyStock", body.toString());
 		JsonObject jsonObject = (JsonObject) JsonParser.parseString(response.body());
 		JsonObject output = new JsonObject();
 		if (jsonObject.has("rt_cd")) {

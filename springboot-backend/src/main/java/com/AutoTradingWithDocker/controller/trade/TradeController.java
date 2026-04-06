@@ -81,7 +81,7 @@ public class TradeController {
         if (amount == null || amount.isEmpty()) {
             throw new Exception("Not exist amount.");
         }
-        String result = tradeService.buyStock(body, amount);
+        String result = tradeService.tradeStock(body, amount, "TTTC0012U");
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .result("success")
@@ -94,15 +94,25 @@ public class TradeController {
      *
      * 매도하기
      */
-    @GetMapping(value = "/sellStock", produces = "application/json; charset=UTF8")
-    public ResponseEntity<CommonResponse> sellStock(@RequestParam("accountFront") String accountFront,
-                                                   @RequestParam("accountBack") String accountBack,
-                                                   @RequestParam("code")String code) {
+    @GetMapping(value = "/sellStock/{amount}", produces = "application/json; charset=UTF8")
+    public ResponseEntity<CommonResponse> sellStock(@PathVariable("amount") String amount,
+                                                    @RequestBody TradeBody body) throws Exception {
 
+        if (body.getAppkey().isEmpty() || body.getAppsecret().isEmpty() || body.getAccessToken().isEmpty()) {
+            throw new Exception("Invalid token info.");
+        }
+        if (body.getAccountFront().isEmpty() || body.getAccountBack().isEmpty() || body.getCode().isEmpty()) {
+            throw new Exception("Invalid account info.");
+        }
+        if (amount == null || amount.isEmpty()) {
+            throw new Exception("Not exist amount.");
+        }
+
+        String result = tradeService.tradeStock(body, amount, "TTTC0011U");
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .result("success")
-                .data(null)
+                .data(result)
                 .build());
     }
 }
