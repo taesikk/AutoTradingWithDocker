@@ -28,6 +28,7 @@
 - HTML / CSS
 - jQuery
 - Vanilla JavaScript
+- Cursor AI
 
 ### Infra
 - Docker
@@ -98,4 +99,4 @@ AutoTradingWithDocker
 ### 1️⃣ 웹 페이지 접속
 
 ```
-http://taesikk.duckdns.org
+http://taesikk.duckdns.org:3000
