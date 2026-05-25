@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>게시글 — Q&A</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 40px 20px 20px;
+      text-align: center;
+    }
+
+    header h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    header h3 {
+      font-weight: normal;
+      color: #666;
+    }
+
+    .board-container {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 700px;
+      margin-top: 30px;
+      margin-bottom: 40px;
+      box-sizing: border-box;
+    }
+
+    .detail-title {
+      font-size: 22px;
+      margin: 0 0 12px 0;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .detail-meta {
+      font-size: 14px;
+      color: #666;
+      margin: 0 0 24px 0;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .detail-body {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #333;
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 80px;
+    }
+
+    .comment-heading {
+      font-size: 18px;
+      margin: 32px 0 16px 0;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .comment-item {
+      padding: 14px 0;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    .comment-item:last-child {
+      border-bottom: none;
+    }
+
+    .comment-meta {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .comment-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .comment-empty {
+      font-size: 14px;
+      color: #888;
+      margin: 0;
+    }
+
+    .comment-write {
+      margin-top: 18px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .comment-input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .comment-submit-btn {
+      height: 40px;
+      padding: 0 16px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .detail-error {
+      color: #c00;
+      font-size: 15px;
+      text-align: center;
+      padding: 24px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<header style="width:700px; position:relative; text-align:center;">
+
+  <button onclick="location.href='home.html'" style="
+    position:absolute;
+    left:0;
+    top:80%;
+    transform:translateY(-50%);
+    height:40px;
+    padding:0 16px;
+    background-color:#6c757d;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+  ">
+    🏠
+  </button>
+
+  <h2>게시글</h2>
+  <h3 id="detailSubtitle">질문 내용을 확인하세요</h3>
+
+  <button id="btnBackList" style="
+    position:absolute;
+    right:0;
+    top:80%;
+    transform:translateY(-50%);
+    height:40px;
+    padding:0 16px;
+    background-color:#007bff;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+  ">
+    목록
+  </button>
+
+</header>
+
+<div class="board-container">
+
+  <p id="detailError" class="detail-error" style="display:none;"></p>
+
+  <div id="detailWrap">
+    <h1 id="detailTitle" class="detail-title"></h1>
+    <p id="detailMeta" class="detail-meta"></p>
+    <div id="detailBody" class="detail-body"></div>
+
+    <h3 class="comment-heading">댓글</h3>
+    <div id="commentList"></div>
+    <div class="comment-write">
+      <input type="text" id="commentInput" class="comment-input" placeholder="댓글을 입력하세요" disabled>
+      <button id="commentSubmitBtn" class="comment-submit-btn" type="button" disabled>등록</button>
+    </div>
+  </div>
+
+</div>
+<script src="/static/js/ajax_util.js"></script>
+<script src="/config/config.js"></script>
+<script src="/static/js/board-content.js"></script>
+</body>
+</html>

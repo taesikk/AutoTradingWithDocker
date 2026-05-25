@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Q&A 게시판</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 40px 20px 20px;
+      text-align: center;
+    }
+
+    header h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    header h3 {
+      font-weight: normal;
+      color: #666;
+    }
+
+    .board-container {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 700px;
+      margin-top: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f1f3f5;
+    }
+
+    tr:hover {
+      background-color: #f8f9fa;
+    }
+
+    tr.board-data-row {
+      cursor: pointer;
+    }
+
+    .pagination {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .page-btn {
+      margin: 0 5px;
+      cursor: pointer;
+      color: #007bff;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header style="width:700px; position:relative; text-align:center;">
+
+  <!-- 홈 버튼 -->
+  <button onclick="location.href='home.html'" style="
+    position:absolute;
+    left:0;
+    top:80%;
+    transform:translateY(-50%);
+    height:40px;
+    padding:0 16px;
+    background-color:#6c757d;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+  ">
+    🏠
+  </button>
+
+  <!-- 제목 -->
+  <h2>Q&A 게시판</h2>
+  <h3>궁금한 내용을 자유롭게 질문하세요</h3>
+
+  <!-- 질문 등록 버튼 -->
+  <button id="writeBtn" style="
+    position:absolute;
+    right:0;
+    top:80%;
+    transform:translateY(-50%);
+    height:40px;
+    padding:0 16px;
+    background-color:#007bff;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+  ">
+    질문 등록
+  </button>
+
+</header>
+
+<div class="board-container">
+
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>날짜</th>
+      </tr>
+    </thead>
+    <tbody id="boardBody">
+
+      <!-- clone용 샘플 -->
+      <tr clonesample="tableSample" style="display:none;">
+        <td clonekey="idx" class="no"></td>
+        <td clonekey="title" class="title"></td>
+        <td clonekey="creator" class="writer"></td>
+        <td clonekey="createDate" class="date"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination" id="pagination"></div>
+
+</div>
+<script src="/static/js/ajax_util.js"></script>
+<script src="/config/config.js"></script>
+<script src="/static/js/board.js"></script>
+</body>
+</html>
