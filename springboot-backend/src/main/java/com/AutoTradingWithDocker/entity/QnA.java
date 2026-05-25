@@ -22,8 +22,8 @@ public class QnA {
     private String comment; // 댓글
     @Column
     private String creator; // 작성자
-    @Column
+    @Column(name = "createDate")
     private long createDate;  // 작성일
-    @Column
+    @Column(name = "updateDate")
     private long updateDate;  // 수정
 }

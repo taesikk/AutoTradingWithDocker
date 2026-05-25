@@ -10,86 +10,10 @@ $(document).ready(function () {
 
 
 var init = function() {
-    //getPostList();
     addEvent();
+    getPostList();
     pagination.init();
 
-    // test data
-    postData.push({
-      idx: 1,
-      title: 'test',
-      creator: 'test',
-      content: 'test 입니다.',
-      createdAt: 1718745600000,
-    },{
-      idx: 2,
-      title: 'test2',
-      creator: 'test2',
-      content: 'test2 입니다.',
-      createdAt: 1718745600000,
-    },{
-      idx: 3,
-      title: 'test3',
-      creator: 'test3',
-      content: 'test3 입니다.',
-      createdAt: 1718745600000,
-    },
-    {
-      idx: 4,
-      title: 'test4',
-      creator: 'test4',
-      content: 'test4 입니다.',
-      createdAt: 1718745600000,
-    },
-    {
-      idx: 5,
-      title: 'test5',
-      creator: 'test5',
-      content: 'test5 입니다.',
-      createdAt: 1718745600000,
-    },
-    {
-      idx: 6,
-      title: 'test6',
-      creator: 'test6',
-      content: 'test6 입니다.',
-      createdAt: 1718745600000,
-    },
-    {
-      idx: 7,
-      title: 'test7',
-      creator: 'test7',
-      content: 'test7 입니다.',
-      createdAt: 1718745600000,
-    },
-    {
-      idx: 8,
-      title: 'test8',
-      creator: 'test8',
-      content: 'test8 입니다.',
-      createdAt: 1718745600000,
-    },
-    {
-      idx: 9,
-      title: 'test9',
-      creator: 'test9',
-      content: 'test9 입니다.',
-      createdAt: 1718745600000,
-    },
-    {
-      idx: 10,
-      title: 'test10',
-      creator: 'test10',
-      content: 'test10 입니다.',
-      createdAt: 1718745600000,
-    },
-    {
-      idx: 11,
-      title: 'test11',
-      creator: 'test11',
-      content: 'test11 입니다.',
-      createdAt: 1718745600000,
-    });
     pagination.currentPage = 1;
     refreshBoard();
 };
@@ -125,29 +49,18 @@ var renderTable = function() {
         $row.removeAttr('clonesample');
         $row.removeAttr('style').show();
 
-        $row.find('[clonekey="idx"]').text(post.idx);
+        $row.find('[clonekey="idx"]').text(post.id);
         $row.find('[clonekey="title"]').text(post.title);
         $row.find('[clonekey="creator"]').text(post.creator);
 
-        var createdAt = longToDate(post.createdAt);
-        $row.find('[clonekey="createDate"]').text(createdAt);
+        var createDate = longToDate(post.createDate);
+        $row.find('[clonekey="createDate"]').text(createDate);
 
         $row.addClass('board-data-row');
         $row.on('click', function () {
             sessionStorage.setItem('board_view_post', JSON.stringify(post));
-            location.href = 'board-content.html?idx=' + encodeURIComponent(post.idx);
+            location.href = 'board-content.html?id=' + encodeURIComponent(post.id);
         });
-
-        // $row.find('[clonekey]').each(function () {
-        //     var $cell = $(this);
-        //     var key = $cell.attr('clonekey');
-        //     $cell.text(cellTextByClonekey(post, key));
-        //     if (key === 'title') {
-        //         var content = post.content != null ? String(post.content) : '';
-        //         var preview = content.length > 200 ? content.slice(0, 200) + '…' : content;
-        //         $cell.attr('title', preview);
-        //     }
-        // });
 
         $tbody.append($row);
     });
@@ -201,40 +114,28 @@ var refreshBoard = function () {
 };
 
 var getPostList = function() {
-    var requestURL = window.$config.API_BASE_URL + '/post/list';
-    var data = {
-        accessToken: localStorage.getItem('access_token'),
-        appkey: localStorage.getItem('appkey'),
-        appsecret: localStorage.getItem('appsecret'),
-    };
+  var now = new Date().getTime();
+  var requestURL = window.$config.API_BASE_URL + '/qna/list';
+  var data = {
+    keyword: '',
+    sort: 'id',
+    skip : skip,
+    limit : limit,
+    startDate : 0,
+    endDate : now
+  };
 
-    var successCallback = function(data) {
-        postData = data.data || [];
-        postData.push({
-          idx: 1,
-          title: 'test',
-          creator: 'test',
-          createdAt: '2026-04-19',
-        },{
-          idx: 2,
-          title: 'test2',
-          creator: 'test2',
-          createdAt: '2026-04-19',
-        },{
-          idx: 3,
-          title: 'test3',
-          creator: 'test3',
-          createdAt: '2026-04-19',
-        });
-        pagination.currentPage = 1;
-        refreshBoard();
-    };
+  var successCallback = function(data) {
+      postData = data.data || [];
+      pagination.currentPage = 1;
+      refreshBoard();
+  };
 
-    var errorCallback = function(data) {
-        alert(data);
-    };
+  var errorCallback = function(data) {
+      alert(data);
+  };
 
-    jsonAjax(requestURL, 'GET', true, data, successCallback, errorCallback);
+  jsonAjax(requestURL, 'POST', true, data, successCallback, errorCallback);
 };
 
 var pagination = {

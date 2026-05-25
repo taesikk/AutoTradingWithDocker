@@ -23,8 +23,25 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    h3 {
+    .popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 20px;
+    }
+
+    h3 {
+      margin: 0;
+    }
+
+    .close-btn {
+      border: none;
+      background: transparent;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      color: #666;
+      padding: 0 4px;
     }
 
     .form-group {
@@ -59,7 +76,10 @@
 <body>
 
 <div class="form-box">
-  <h3>질문 등록</h3>
+  <div class="popup-header">
+    <h3>질문 등록</h3>
+    <button type="button" id="closePopupBtn" class="close-btn" aria-label="팝업 닫기">X</button>
+  </div>
 
   <div class="form-group">
     <input type="text" id="writer" placeholder="작성자">
@@ -76,6 +96,8 @@
   <button class="submit-btn" id="saveBtn">등록</button>
 </div>
 
-
+<script src="/static/js/ajax_util.js"></script>
+<script src="/config/config.js"></script>
+<script src="/static/js/qna_popup.js"></script>
 </body>
 </html>

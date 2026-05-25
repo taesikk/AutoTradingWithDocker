@@ -104,6 +104,33 @@
       margin: 0;
     }
 
+    .comment-write {
+      margin-top: 18px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .comment-input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .comment-submit-btn {
+      height: 40px;
+      padding: 0 16px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
     .detail-error {
       color: #c00;
       font-size: 15px;
@@ -165,6 +192,10 @@
 
     <h3 class="comment-heading">댓글</h3>
     <div id="commentList"></div>
+    <div class="comment-write">
+      <input type="text" id="commentInput" class="comment-input" placeholder="댓글을 입력하세요" disabled>
+      <button id="commentSubmitBtn" class="comment-submit-btn" type="button" disabled>등록</button>
+    </div>
   </div>
 
 </div>

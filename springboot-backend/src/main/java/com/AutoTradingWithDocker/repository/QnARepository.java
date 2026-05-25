@@ -14,7 +14,7 @@ public interface QnARepository extends JpaRepository<QnA, Long>{
 
     @Query("""
     SELECT q FROM QnA q
-    WHERE (:keyword IS NULL OR q.title LIKE %:keyword%)
+    WHERE (q.title LIKE %:keyword%)
       AND (:startDate = 0 OR q.createDate >= :startDate)
       AND (:endDate = 0 OR q.createDate <= :endDate)
 """)

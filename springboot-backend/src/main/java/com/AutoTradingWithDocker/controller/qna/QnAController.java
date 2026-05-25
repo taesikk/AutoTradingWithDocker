@@ -15,7 +15,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/qna")
+@RequestMapping("/tradebot/qna")
 @RequiredArgsConstructor
 public class QnAController {
     private final QnAService qnAService;
@@ -23,7 +23,7 @@ public class QnAController {
     /**
      *  qna 게시판 목록 조회
      */
-    @GetMapping(value = "/list", produces = "application/json; charset=UTF8")
+    @PostMapping(value = "/list", produces = "application/json; charset=UTF8")
     public ResponseEntity<CommonResponse> getQnAList(@RequestBody QnASearchBody body) throws Exception {
         Page<QnA> result = qnAService.getQnAList(body);
 

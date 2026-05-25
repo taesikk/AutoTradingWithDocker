@@ -13,6 +13,38 @@ var addEvent = function() {
     $("#btnBackList").click(function () {
         location.href = 'board.html';
     });
+
+    $("#commentSubmitBtn").click(function () {
+        var comment = $("#commentInput").val();
+        var params = new URLSearchParams(window.location.search);
+        var id = params.get('id');
+
+        if (!comment || String(comment).trim() === "") {
+            alert("댓글 내용을 입력해주세요.");
+            return;
+        }
+
+        var requestURL = window.$config.API_BASE_URL + "/qna/comment";
+        var data = {
+            idx: id,
+            title: "",
+            content: "",
+            creator: "",
+            comment: String(comment).trim()
+        };
+
+        var successCallback = function () {
+            alert("댓글 작성 완료");
+            //location.reload();
+            loadPost();
+        };
+
+        var errorCallback = function () {
+            alert("댓글 작성 실패");
+        };
+
+        jsonAjax(requestURL, "POST", true, data, successCallback, errorCallback);
+    });
 };
 
 var longToDate = function(long) {
@@ -43,35 +75,38 @@ var renderComments = function (post) {
 
     var comment = post.comment;
 
-    if (Array.isArray(comment)) {
-        if (comment.length === 0) {
-            $list.append($('<p class="comment-empty">').text('댓글이 없습니다.'));
-            return;
-        }
-        comment.forEach(function (c) {
-            var $item = $('<div class="comment-item">');
-            if (c != null && typeof c === 'object') {
-                var author = c.creator != null ? c.creator : (c.writer != null ? c.writer : '');
-                var at = c.createDate != null ? c.createDate : (c.createdAt != null ? c.createdAt : '');
-                var metaParts = [];
-                if (author !== '') {
-                    metaParts.push(author);
-                }
-                if (at !== '') {
-                    metaParts.push(String(at));
-                }
-                if (metaParts.length > 0) {
-                    $item.append($('<div class="comment-meta">').text(metaParts.join(' · ')));
-                }
-                var text = c.content != null ? c.content : (c.text != null ? c.text : '');
-                $item.append($('<div class="comment-text">').text(String(text)));
-            } else {
-                $item.append($('<div class="comment-text">').text(String(c)));
-            }
-            $list.append($item);
-        });
+    // if (Array.isArray(comment)) {
+    if (comment.length === 0) {
+        $list.append($('<p class="comment-empty">').text('댓글이 없습니다.'));
         return;
     }
+    var $item = $('<div class="comment-item">');
+    $item.append($('<div class="comment-text">').text(String(comment)));
+    $list.append($item);
+    // comment.forEach(function (c) {
+    //     var $item = $('<div class="comment-item">');
+    //     if (c != null && typeof c === 'object') {
+    //         var author = c.creator != null ? c.creator : (c.writer != null ? c.writer : '');
+    //         var at = c.createDate != null ? c.createDate : (c.createdAt != null ? c.createdAt : '');
+    //         var metaParts = [];
+    //         if (author !== '') {
+    //             metaParts.push(author);
+    //         }
+    //         if (at !== '') {
+    //             metaParts.push(String(at));
+    //         }
+    //         if (metaParts.length > 0) {
+    //             $item.append($('<div class="comment-meta">').text(metaParts.join(' · ')));
+    //         }
+    //         var text = c.content != null ? c.content : (c.text != null ? c.text : '');
+    //         $item.append($('<div class="comment-text">').text(String(text)));
+    //     } else {
+    //         $item.append($('<div class="comment-text">').text(String(c)));
+    //     }
+    //     $list.append($item);
+    // });
+    return;
+    // }
 
     if (comment != null && comment !== '') {
         if (typeof comment === 'number' || (typeof comment === 'string' && /^\d+$/.test(String(comment).trim()))) {
