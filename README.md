@@ -99,4 +99,4 @@ AutoTradingWithDocker
 ### 1️⃣ 웹 페이지 접속
 
 ```
-http://taesikk.duckdns.org:3000
+http://taesikk.duckdns.org:3000(서버 공유기 포트포워딩 이슈로 API 통신 불가)
